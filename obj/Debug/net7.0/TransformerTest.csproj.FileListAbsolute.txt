@@ -1,0 +1,16 @@
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\bin\Debug\net7.0\TransformerTest.exe
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\bin\Debug\net7.0\TransformerTest.deps.json
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\bin\Debug\net7.0\TransformerTest.runtimeconfig.json
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\bin\Debug\net7.0\TransformerTest.dll
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\bin\Debug\net7.0\TransformerTest.pdb
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\obj\Debug\net7.0\TransformerTest.csproj.AssemblyReference.cache
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\obj\Debug\net7.0\TransformerTest.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\obj\Debug\net7.0\TransformerTest.AssemblyInfoInputs.cache
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\obj\Debug\net7.0\TransformerTest.AssemblyInfo.cs
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\obj\Debug\net7.0\TransformerTest.csproj.CoreCompileInputs.cache
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\obj\Debug\net7.0\TransformerTest.dll
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\obj\Debug\net7.0\refint\TransformerTest.dll
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\obj\Debug\net7.0\TransformerTest.pdb
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\obj\Debug\net7.0\TransformerTest.genruntimeconfig.cache
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\obj\Debug\net7.0\ref\TransformerTest.dll
+C:\Users\mattp\OneDrive\Desktop\KingsAndConquest\TransformerTest\bin\Debug\net7.0\less_common_chats.txt
