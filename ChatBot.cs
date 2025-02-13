@@ -31,38 +31,43 @@ public class ChatBot
         Console.WriteLine("Chatbot: Hello! Type 'exit' to quit.");
         while (true)
         {
-            string current_response = string.Empty;
             Console.Write("You: ");
             string input = Console.ReadLine();
-            if (input.ToLower() == "exit") break;
-
-            /*for (int j = 0; j < 10; j++)
-            {*/
-                int[] tokens = _tokenizer.Tokenize(input);
-                double[,] embedded = _embeddings.GetEmbedding(tokens);
-                double[,] encoded = _encoder.Forward(embedded);
-                double[,] decoded = _decoder.Forward(encoded, embedded);
-                var logits = MatrixUtils.Softmax(decoded);
-                var textTokens = MatrixUtils.DecodeTokens(logits);
-                Console.WriteLine();
-
-                Console.Write("Thinking: ");
-                for (int i = 0; i < textTokens.Length; i++)
+            if (input.ToLower() == "exit" || input.ToLower() == "quit")
+                break;
+            string n_input = string.Empty;
+            var filtered = NGram_Generator.Pad_Filter(input.ToLower().Split(' '), true, true);
+            for (int i = 0; i < filtered.Length; i++)
+            {
+                if (i == 0)
                 {
-                    Console.Write(textTokens[i] + " ");
+                    n_input += filtered[i];
                 }
+                else
+                {
+                    n_input += " " + filtered[i];
+                }
+            }
+            int[] tokens = _tokenizer.Tokenize(n_input.ToLower());
+            double[,] embedded = _embeddings.GetEmbedding(tokens);
+            double[,] encoded = _encoder.Forward(embedded);
+            double[,] decoded = _decoder.Forward(encoded, embedded);
+            var logits = MatrixUtils.Softmax(decoded);
+            var textTokens = MatrixUtils.DecodeTokens(logits);
+            Console.WriteLine();
 
-                Console.WriteLine();
-                var resp = _responseGenerator.ConvertTokensToText(textTokens, _tokenizer.GetReverseTokenDict()); // change this.
+            Console.Write("Thinking: ");
+            for (int i = 0; i < textTokens.Length; i++)
+            {
+                Console.Write(textTokens[i] + " ");
+            }
 
-                var _res = resp.Split(' ')[0];
-                current_response += " " + _res;
-                input = input + " " + _res;
+            Console.WriteLine();
+            var resp = _responseGenerator.ConvertTokensToText(textTokens, _tokenizer.GetReverseTokenDict()); // change this.
 
-                Console.WriteLine($"Chatbot Process: {resp}");
-            //}
+            var _res = resp.Split(' ')[0];
 
-            Console.WriteLine($"Chatbot: {current_response}");
+            Console.WriteLine($"Chatbot Process: {resp}");
         }
     }
 }

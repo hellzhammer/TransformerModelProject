@@ -44,7 +44,7 @@
     public double[,] Forward(double[,] encoderOutput, double[,] decoderInput, int expectedRows, int expectedCols)
     {
         var selfAttnOutput = _selfAttention.ComputeAttention(decoderInput);
-        var crossAttnOutput = _crossAttention.ComputeAttention(selfAttnOutput, encoderOutput, encoderOutput);
+        var crossAttnOutput = _crossAttention.ComputeAttention(encoderOutput);
 
         var hidden = MatrixUtils.Multiply(crossAttnOutput, _W1);
         var output = MatrixUtils.Multiply(hidden, _W2);
@@ -79,8 +79,8 @@
         var gradient_W1 = MatrixUtils.Multiply(encoder_transpose, hiddenGradient); 
 
         // apply clipping
-        gradient_W1 = LossFunction.ClipGradients(gradient_W1, 10.0);
-        gradient_W2 = LossFunction.ClipGradients(gradient_W2, 10.0);
+        //gradient_W1 = LossFunction.ClipGradients(gradient_W1, 10.0);
+        //gradient_W2 = LossFunction.ClipGradients(gradient_W2, 10.0);
 
         // Update weights using the gradient
         Optimizer.UpdateWeights(_W1, gradient_W1, _learningRate);

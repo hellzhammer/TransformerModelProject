@@ -25,7 +25,7 @@ public class Program
         }
 
         Trainer trainer = new Trainer(d.Item1, nvalues);
-        trainer.TrainModel(epochs: 20);
+        trainer.TrainModel(epochs: 30);
 
         ChatBot bot = trainer.CreateNewBot();
         bot.Chat();

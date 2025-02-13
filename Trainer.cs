@@ -11,9 +11,9 @@
     {
         this.training_data = data;
         _tokenizer = new SystemTokenizer(vocab);
-        _embeddings = new SystemEmbeddings(1000, 16);
-        _encoder = new TransformerEncoder(16, 2);
-        _decoder = new TrainableTransformerDecoder(16, 2);
+        _embeddings = new SystemEmbeddings(10000, 30);
+        _encoder = new TransformerEncoder(30, 5);
+        _decoder = new TrainableTransformerDecoder(30, 5);
     }
 
     public ChatBot CreateNewBot()
