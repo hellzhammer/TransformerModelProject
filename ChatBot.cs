@@ -8,14 +8,14 @@ public class ChatBot
     private TransformerDecoder _decoder;
     private ResponseGenerator _responseGenerator;
 
-    public ChatBot()
+    /*public ChatBot()
     {
         _tokenizer = new SystemTokenizer();
         _embeddings = new SystemEmbeddings(1000, 16);
         _encoder = new TransformerEncoder(16, 2);
         _decoder = new TransformerDecoder(16, 2);
         _responseGenerator = new ResponseGenerator();
-    }
+    }*/
 
     public ChatBot(SystemTokenizer systok, SystemEmbeddings sysemb, TransformerEncoder tranenc, TransformerDecoder trandec)
     {
@@ -63,9 +63,7 @@ public class ChatBot
             }
 
             Console.WriteLine();
-            var resp = _responseGenerator.ConvertTokensToText(textTokens, _tokenizer.GetReverseTokenDict()); // change this.
-
-            var _res = resp.Split(' ')[0];
+            var resp = _responseGenerator.ConvertTokensToText(textTokens, _tokenizer.GetReverseTokenDict());
 
             Console.WriteLine($"Chatbot Process: {resp}");
         }

@@ -33,14 +33,7 @@
             foreach (var sample in dataset)
             {
                 Console.WriteLine("Epoch: " + epoch);
-                int[] inputTokens = _tokenizer.Tokenize(sample.Input);
-                int[] expectedTokens = _tokenizer.Tokenize(sample.ExpectedOutput);
-
-                double[,] inputEmbeddings = _embeddings.GetEmbedding(inputTokens);
-                double[,] expectedEmbeddings = _embeddings.GetEmbedding(expectedTokens);
-
-                double[,] encoderOutput = _encoder.Forward(inputEmbeddings);
-                _decoder.Train(encoderOutput, inputEmbeddings, expectedEmbeddings);
+                _decoder.Train(sample.Input, sample.ExpectedOutput, _embeddings, _tokenizer, _encoder, _decoder);
             }
         }
     }

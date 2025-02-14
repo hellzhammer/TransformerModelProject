@@ -11,6 +11,24 @@
         return result;
     }
 
+    public static double[,] Add(double[,] a, double[,] b)
+    {
+        int rows = a.GetLength(0);
+        int cols = a.GetLength(1);
+
+        if (rows != b.GetLength(0) || cols != b.GetLength(1))
+            throw new ArgumentException("Matrix dimensions must match for addition.");
+
+        double[,] result = new double[rows, cols];
+
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+                result[i, j] = a[i, j] + b[i, j];
+
+        return result;
+    }
+
+
     public static double[,] Resize(double[,] input, int newRows, int newCols)
     {
         int oldRows = input.GetLength(0), oldCols = input.GetLength(1);
@@ -22,7 +40,6 @@
 
         return resized;
     }
-
 
     public static double[,] Transpose(double[,] matrix)
     {

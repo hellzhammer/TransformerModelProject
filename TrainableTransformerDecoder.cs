@@ -43,10 +43,19 @@
 
     public double[,] Forward(double[,] encoderOutput, double[,] decoderInput, int expectedRows, int expectedCols)
     {
+        // Self-Attention: Processes decoder input (for autoregressive behavior)
         var selfAttnOutput = _selfAttention.ComputeAttention(decoderInput);
+
+        // Cross-Attention: Links encoder and decoder representations
         var crossAttnOutput = _crossAttention.ComputeAttention(encoderOutput);
 
-        var hidden = MatrixUtils.Multiply(crossAttnOutput, _W1);
+        // Combine both attention outputs (concatenation or element-wise sum)
+        var combinedAttn = MatrixUtils.Add(selfAttnOutput, crossAttnOutput);
+
+        // Hidden Layer Transformation
+        var hidden = MatrixUtils.Multiply(combinedAttn, _W1);
+
+        // Output Transformation
         var output = MatrixUtils.Multiply(hidden, _W2);
 
         // Ensure output shape matches expectedOutput
@@ -55,37 +64,54 @@
         return output;
     }
 
-    public void Train(double[,] encoderOutput, double[,] decoderInput, double[,] expectedOutput)
+    public void Train(string input, string expectedResponse, SystemEmbeddings _embeddings, SystemTokenizer _tokenizer, TransformerEncoder _encoder, TrainableTransformerDecoder _decoder)
     {
-        int expRows = expectedOutput.GetLength(0);
-        int expCols = expectedOutput.GetLength(1);
-        var predictedOutput = Forward(encoderOutput, decoderInput, expRows, expCols);
-        Console.WriteLine($"Predicted: {predictedOutput.GetLength(0)}x{predictedOutput.GetLength(1)}, Expected: {expectedOutput.GetLength(0)}x{expectedOutput.GetLength(1)}");
-        var loss = LossFunction.ComputeLoss(predictedOutput, expectedOutput);
+        // Tokenize input and expected response
+        int[] inputTokens = _tokenizer.Tokenize(input.ToLower());
+        int[] expectedTokens = _tokenizer.Tokenize(expectedResponse.ToLower());
 
-        // Compute the gradient for the final output
-        var outputError = LossFunction.ComputeGradient(predictedOutput, expectedOutput, _W2.GetLength(1)); // [batchSize, embedDim]
+        // Convert tokens to embeddings
+        double[,] embeddedInput = _embeddings.GetEmbedding(inputTokens);
+        double[,] embeddedExpected = _embeddings.GetEmbedding(expectedTokens);
 
-        // Compute the correct gradient for W2
-        var atten = _crossAttention.ComputeAttention(encoderOutput);
-        var hiddenLayerOutput = MatrixUtils.Multiply(atten, _W1); 
-        var hiddenlayertranspose = MatrixUtils.Transpose(hiddenLayerOutput);
-        var gradient_W2 = MatrixUtils.Multiply(hiddenlayertranspose, outputError); 
+        // Get expected output dimensions
+        int rows = embeddedExpected.GetLength(0);
+        int cols = embeddedExpected.GetLength(1);
 
-        // back propogate
+        // Forward pass through the encoder & decoder (same as Chat function)
+        double[,] encoded = _encoder.Forward(embeddedInput);
+        double[,] decoded = _decoder.Forward(encoded, embeddedInput, rows, cols); // Now includes expected shape
+
+        // Compute softmax to get probabilities
+        double[,] logits = MatrixUtils.Softmax(decoded);
+
+        // Compute loss
+        var loss = LossFunction.ComputeLoss(logits, embeddedExpected);
+        Console.WriteLine($"Current Loss: {loss}");
+
+        // Compute the gradient for the output layer
+        var outputError = LossFunction.ComputeGradient(logits, embeddedExpected, _W2.GetLength(1));
+
+        // Compute attention (same as in Chat)
+        var attention = _crossAttention.ComputeAttention(encoded);
+
+        // Compute hidden layer output
+        var hiddenLayerOutput = MatrixUtils.Multiply(attention, _W1);
+        var hiddenLayerTranspose = MatrixUtils.Transpose(hiddenLayerOutput);
+
+        // Compute gradients for weights
+        var gradient_W2 = MatrixUtils.Multiply(hiddenLayerTranspose, outputError);
         var w2_transpose = MatrixUtils.Transpose(_W2);
-        var hiddenGradient = MatrixUtils.Multiply(gradient_W2, w2_transpose); 
-        var encoder_transpose = MatrixUtils.Transpose(encoderOutput);
-        var gradient_W1 = MatrixUtils.Multiply(encoder_transpose, hiddenGradient); 
+        var hiddenGradient = MatrixUtils.Multiply(gradient_W2, w2_transpose);
+        var encoder_transpose = MatrixUtils.Transpose(encoded);
+        var gradient_W1 = MatrixUtils.Multiply(encoder_transpose, hiddenGradient);
 
-        // apply clipping
-        //gradient_W1 = LossFunction.ClipGradients(gradient_W1, 10.0);
-        //gradient_W2 = LossFunction.ClipGradients(gradient_W2, 10.0);
+        // Apply gradient clipping
+        gradient_W1 = LossFunction.ClipGradients(gradient_W1, 5);
+        gradient_W2 = LossFunction.ClipGradients(gradient_W2, 5);
 
-        // Update weights using the gradient
+        // Update weights
         Optimizer.UpdateWeights(_W1, gradient_W1, _learningRate);
         Optimizer.UpdateWeights(_W2, gradient_W2, _learningRate);
-
-        Console.WriteLine($"Current Loss: {loss}");
     }
 }

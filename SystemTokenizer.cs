@@ -3,12 +3,6 @@
 public class SystemTokenizer
 {
     private Dictionary<string, int> _vocab = new Dictionary<string, int>();
-    private int _nextTokenId = 1;
-
-    public SystemTokenizer()
-    {
-
-    }
 
     public SystemTokenizer(Dictionary<string, int> vocab)
     {
@@ -91,26 +85,4 @@ public class SystemTokenizer
 
         return bigrams;
     }
-
-    /*/// <summary>
-    /// to do. not really functional yet
-    /// </summary>
-    /// <param name="sentence"></param>
-    /// <returns></returns>
-    public int[] ExtractBigrams(string[] sentence)
-    {
-        var words = sentence;
-        //var bigrams = new List<string>();
-        List<int> ints = new List<int>();
-
-        for (int i = 0; i < words.Length - 1; i++)
-        {
-            if (_vocab.ContainsKey(words[i] + " " + words[i + 1]))
-            {
-                ints.Add();
-            }
-        }
-
-        return //bigrams;
-    }*/
 }

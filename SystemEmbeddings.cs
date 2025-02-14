@@ -1,6 +1,4 @@
-﻿using System;
-
-public class SystemEmbeddings
+﻿public class SystemEmbeddings
 {
     private double[,] _embeddingMatrix;
     private int _vocabSize, _embedDim;
