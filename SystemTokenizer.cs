@@ -1,6 +1,4 @@
-﻿using TransformerTest.Models;
-
-public class SystemTokenizer
+﻿public class SystemTokenizer
 {
     private Dictionary<string, int> _vocab = new Dictionary<string, int>();
 

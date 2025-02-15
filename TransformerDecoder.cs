@@ -35,11 +35,14 @@
         // Self-attention on decoder input
         var selfAttnOutput = _selfAttention.ComputeAttention(decoderInput);
 
-        // First cross-attention with encoder output
+        // First cross-attention using encoder output as context
         var crossAttnOutput1 = _crossAttention1.ComputeAttention(encoderOutput);
 
-        // Combine with feed-forward network
-        var hidden = MatrixUtils.Multiply(crossAttnOutput1, _W1);
+        // Combine self-attention and cross-attention outputs
+        var combined = MatrixUtils.Add(selfAttnOutput, crossAttnOutput1);
+
+        // Feed-forward network
+        var hidden = MatrixUtils.Multiply(combined, _W1);
         var output = MatrixUtils.Multiply(hidden, _W2);
 
         return output;

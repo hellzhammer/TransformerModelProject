@@ -3,7 +3,7 @@
     private MultiHeadAttention _selfAttention;
     private MultiHeadAttention _crossAttention;
     private double[,] _W1, _W2;
-    private double _learningRate = 0.001;
+    private double _learningRate = 0.0001;
 
     public TrainableTransformerDecoder(int embedDim, int numHeads)
     {
