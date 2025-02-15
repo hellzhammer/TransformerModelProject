@@ -1,21 +1,10 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-public class ChatBot
+﻿public class ChatBot
 {
     private SystemTokenizer _tokenizer;
     private SystemEmbeddings _embeddings;
     private TransformerEncoder _encoder;
     private TransformerDecoder _decoder;
     private ResponseGenerator _responseGenerator;
-
-    /*public ChatBot()
-    {
-        _tokenizer = new SystemTokenizer();
-        _embeddings = new SystemEmbeddings(1000, 16);
-        _encoder = new TransformerEncoder(16, 2);
-        _decoder = new TransformerDecoder(16, 2);
-        _responseGenerator = new ResponseGenerator();
-    }*/
 
     public ChatBot(SystemTokenizer systok, SystemEmbeddings sysemb, TransformerEncoder tranenc, TransformerDecoder trandec)
     {
@@ -48,6 +37,7 @@ public class ChatBot
                     n_input += " " + filtered[i];
                 }
             }
+
             int[] tokens = _tokenizer.Tokenize(n_input.ToLower());
             double[,] embedded = _embeddings.GetEmbedding(tokens);
             double[,] encoded = _encoder.Forward(embedded);

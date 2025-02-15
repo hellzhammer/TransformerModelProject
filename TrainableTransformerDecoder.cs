@@ -15,7 +15,7 @@
 
     public TransformerDecoder GetDecoder()
     {
-        return new TransformerDecoder(this._selfAttention, this._crossAttention, _W1, _W2);
+        return new TransformerDecoder(_selfAttention, _crossAttention, _W1, _W2);
     }
 
     private double[,] RandomMatrix(int rows, int cols)
