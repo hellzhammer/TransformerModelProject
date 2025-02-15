@@ -33,7 +33,7 @@
             foreach (var sample in dataset)
             {
                 Console.WriteLine("Epoch: " + epoch);
-                _decoder.Train(sample.Input, sample.ExpectedOutput, _embeddings, _tokenizer, _encoder, _decoder);
+                _decoder.Train(sample.Input, sample.ExpectedOutput, _embeddings, _tokenizer, _encoder/*, _decoder*/);
             }
         }
     }
